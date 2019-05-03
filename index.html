@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search recent Javascript topics</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+
+            $(".search-history").hide();
+
+            //Autocomplete with dynamic content
+            var availableTags = [];
+            var theAPI = "https://www.reddit.com/r/javascript.json";
+            $.getJSON( theAPI, {
+                format: "json"
+            })
+                .done(function( data ) {
+                    //console.log(data.data.children)
+                    $.each( data.data.children, function( i, item ) {
+                        //console.log(item)
+                        availableTags.push(item.data.title);
+                    });
+                });
+            $( "#search" ).autocomplete({
+                source: availableTags,
+                select: function( event, ui ) {
+                    //console.log(ui.item);
+                    log( ui.item.value );
+                }
+            });
+
+            //Clear input on click
+            $('#search').on('click focusin', function() {
+                this.value = '';
+            });
+
+            // Return todays date;
+            Date.prototype.today = function () {
+                return ((this.getDate() < 10)?"0":"") + this.getDate() +"/"+(((this.getMonth()+1) < 10)?"0":"") + (this.getMonth()+1) +"/"+ this.getFullYear();
+            };
+
+            // Return the time now
+            Date.prototype.timeNow = function () {
+                return ((this.getHours() < 10)?"0":"") + ((this.getHours()>12)?(this.getHours()-12):this.getHours()) +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes() + ((this.getHours()>12)?(' PM'):' AM');
+            };
+
+            //Search item id
+            sid = 0;
+
+            //Save searches function
+            function log( message ) {
+
+                $(".search-history").show();
+
+                //Get current date and time
+                var newDate = new Date();
+                var datetime = newDate.today() + ", " + newDate.timeNow();
+
+                $( '<tr id="list-item' + sid + '" class="list-item"><td>' + message + '</td><td class="list-meta-data">' + datetime + '</td><td class="list-delete" data-id="'+sid+'">✖</td></tr>' ).prependTo( "#log" );
+                $( "#log" ).scrollTop( 0 );
+                sid++;
+            }
+
+            //Delete list item
+            $(document).on("click", ".list-delete", function(event){
+                $("#list-item"+$(this).attr("data-id")).remove();
+                //If all list items been removed, remove search history
+                if(!$('.list-delete').length){
+                    $(".search-history").hide();
+                }
+            });
+
+            //Delete all list items
+            $(document).on("click", ".list-delete-all", function(event){
+                $(".list-item").remove();
+                $(".search-history").hide();
+            });
+
+        } );
+    </script>
+</head>
+<body>
+<div class="main-area">
+    <h1>Search recent javascript topics</h1>
+    <div class="ui-widget">
+        <input id="search">
+
+        <div class="ui-widget search-history">
+            Search history: <a href="#" class="list-delete-all">(Clear search history)</a>
+            <table id="log" class="ui-widget-content"></table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

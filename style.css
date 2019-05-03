@@ -1,0 +1,74 @@
+h1{
+    text-align: center;
+}
+#search{
+    padding: 10px;
+    width: 300px;
+    max-width: 90%;
+    border: 1px solid #ccc;
+}
+a.list-delete-all{
+    margin-left: 20px;
+    font-size: 14px;
+    color: #ccc;
+    text-decoration: none;
+}
+.ui-widget{
+    text-align: center;
+    margin-top: 40px;
+}
+
+.ui-autocomplete-input{
+    text-align: left;
+}
+table.ui-widget-content{
+    margin: 20px auto;
+    text-align: left;
+    list-style: none;
+    border: none;
+    max-width: 500px;
+}
+
+table { border-collapse: collapse; }
+table.ui-widget-content tr{
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    max-width: 90%;
+}
+table.ui-widget-content tr:first-of-type{
+    border-top: 1px solid #ccc;
+}
+table.ui-widget-content tr td{
+    padding: 10px 10px 10px 0;
+}
+
+.list-meta-data{
+    font-size: 13px;
+    color: #999;
+}
+@media only screen and (min-width: 500px) {
+    .list-meta-data{
+        white-space: nowrap;
+    }
+}
+
+.list-delete{
+    font-size: 22px;
+    color: #999;
+}
+
+.list-delete:hover{
+    cursor: pointer;
+    color: #000;
+}
+
+.ui-menu-item{
+    width: 300px;
+    text-align: left;
+    max-width: 90%;
+}
+.ui-autocomplete-term { font-weight: bold; color: blue; }
+
+.ui-autocomplete-highlight {
+    font-weight: bold;
+}
